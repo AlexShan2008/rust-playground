@@ -1,8 +1,16 @@
+use ferris_says::say;
 use rand::Rng;
 use std::cmp::Ordering;
-use std::io;
+use std::io::{stdout, BufWriter};
 
 fn main() {
+    let stdout = stdout();
+    let message = String::from("Hello fellow Rustaceans!");
+    let width = message.chars().count();
+
+    let mut writer = BufWriter::new(stdout.lock());
+    say(&message, width, writer).unwrap();
+
     println!("Guess the number!");
 
     let secret_number = rand::thread_rng().gen_range(1..=100);
@@ -32,6 +40,4 @@ fn main() {
             }
         }
     }
-
-    
 }
