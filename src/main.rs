@@ -1,6 +1,7 @@
 use ferris_says::say;
 use rand::Rng;
 use std::cmp::Ordering;
+use std::io;
 use std::io::{stdout, BufWriter};
 
 fn main() {
