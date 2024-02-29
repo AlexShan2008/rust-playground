@@ -3,6 +3,10 @@ use rand::Rng;
 use std::cmp::Ordering;
 use std::io;
 use std::io::{stdout, BufWriter};
+use std::net::TcpListener;
+
+mod server;
+
 
 fn main() {
     let stdout = stdout();
@@ -11,6 +15,17 @@ fn main() {
 
     let mut writer = BufWriter::new(stdout.lock());
     say(&message, width, writer).unwrap();
+
+    // Listen for incoming TCP connections on port 7878
+    let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
+
+    for stream in listener.incoming() {
+        let stream = stream.unwrap();
+
+        server::handle_connection(stream);
+
+        println!("Connection established!");
+    }
 
     println!("Guess the number!");
 
