@@ -2,11 +2,24 @@
 use std::{
     fs,
     io::{prelude::*, BufReader},
-    net::TcpStream,
+    net::{TcpListener, TcpStream},
 };
 
+pub fn start_server() {
+    // Listen for incoming TCP connections on port 7878
+    let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
 
-pub fn handle_connection(mut stream: TcpStream) {
+    for stream in listener.incoming() {
+        let stream = stream.unwrap();
+
+        handle_connection(stream);
+
+        println!("Connection established!");
+    }
+}
+
+
+fn handle_connection(mut stream: TcpStream) {
     let buf_reader = BufReader::new(&mut stream);
     let request_line = buf_reader.lines().next().unwrap().unwrap();
 
